@@ -29,15 +29,15 @@ public class CalculatorIntegrationTest {
 
 	}
 
-	@When("^the user add (\\d+) and (\\d+)$")
-	public void the_user_add_and(final long arg1, final long arg2)
+	@When("^the user add (-?\\d+) and (-?\\d+)$")
+	public void the_user_add_and(final long num1, final long num2)
 			throws Throwable {
 
 		final MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		final HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 
 		final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL)
-				.queryParam("num1", arg1).queryParam("num2", arg2);
+				.queryParam("num1", num1).queryParam("num2", num2);
 
 		final HttpEntity<Long> response = this.restTemplate.exchange(builder.build()
 				.toUri(), HttpMethod.GET, httpEntity, Long.class);
@@ -46,9 +46,8 @@ public class CalculatorIntegrationTest {
 
 	}
 
-	@Then("^returns (\\d+) as the sum$")
+	@Then("^returns (-?\\d+) as the sum$")
 	public void returns_as_the_sum(final long arg1) throws Throwable {
 		Assert.assertThat(arg1, CoreMatchers.equalTo(this.sum));
 	}
-
 }
